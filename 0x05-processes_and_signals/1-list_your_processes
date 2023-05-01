@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script displays a list of currently running processes.
+
+echo "User-oriented list of running processes:"
+ps axjf
