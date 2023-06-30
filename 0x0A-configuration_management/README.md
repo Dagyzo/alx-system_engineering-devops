@@ -1,0 +1,1 @@
+olution to 0x0A-configuration_management project
