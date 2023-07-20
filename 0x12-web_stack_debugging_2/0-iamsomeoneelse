@@ -1,22 +1,11 @@
 #!/usr/bin/env bash
+# This script runs the `whoami` command under the user passed as an argument
 
-# Script: check_user.sh
-# Description: This script accepts one argument (a username) and runs the 'whoami' command
-#              under the specified user to check the current user.
+set -euo pipefail
 
-if [ $# -ne 1 ]; then
+if [[ $# -ne 1 ]]; then
   echo "Usage: $0 <username>"
   exit 1
 fi
 
-# Get the username passed as an argument
-username=$1
-
-# Check if the user exists
-if id "$username" &>/dev/null; then
-  # Run 'whoami' command as the specified user
-  su -c "whoami" "$username"
-else
-  echo "User '$username' does not exist."
-fi
-
+sudo -u "$1" whoami
