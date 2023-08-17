@@ -1,14 +1,16 @@
-# Adjusts the worker_processes in nginx.conf to improve request handling.
+# This Puppet manifest increases the ULIMIT for Nginx, improving its traffic handling capacity.
 
-exec { 'update-nginx-worker-processes':
-  command => "sed -i 's/worker_processes 4;/worker_processes 7;/g' /etc/nginx/nginx.conf",
-  onlyif  => "grep -q 'worker_processes 4;' /etc/nginx/nginx.conf",
-  path    => ['/bin', '/usr/bin'],
-} ->
+exec { 'increase-nginx-ulimit':
+  command => 'sed -i "s/15/4096/" /etc/default/nginx',
+  path    => '/usr/bin:/bin',
+  onlyif  => 'grep -q "15" /etc/default/nginx',
+  require => File['/etc/default/nginx'],
+} 
 
 exec { 'restart-nginx':
-  command => 'service nginx restart',
-  path    => ['/sbin', '/usr/sbin', '/usr/bin'],
+  command => '/etc/init.d/nginx restart',
+  path    => '/usr/sbin:/sbin',
+  require => Exec['increase-nginx-ulimit'],
 }
 
 
